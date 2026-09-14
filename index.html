@@ -118,6 +118,42 @@
   .save-indicator.error{color:var(--maroon);}
   @keyframes save-pulse{0%,100%{opacity:1;} 50%{opacity:.4;}}
 
+  .settings-btn{
+    font-family:inherit;
+    border:1px solid var(--line);
+    background:#fff;
+    color:var(--green-deep);
+    width:34px;height:34px;
+    border-radius:8px;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    flex:0 0 auto;
+  }
+  .settings-btn:hover{background:var(--green-pale);}
+  .settings-btn svg{width:18px;height:18px;}
+
+  .settings-overlay{
+    position:fixed;inset:0;background:rgba(20,25,20,0.45);
+    display:flex;align-items:center;justify-content:center;
+    padding:16px;z-index:50;
+  }
+  .settings-modal{
+    background:#fff;border-radius:14px;max-width:440px;width:100%;
+    padding:20px;box-shadow:0 10px 30px rgba(0,0,0,0.25);
+    max-height:90vh;overflow-y:auto;
+  }
+  .settings-modal h3{margin:0 0 8px;color:var(--green-deep);font-size:16.5px;}
+  .settings-hint{font-size:12.5px;color:#6b7063;margin:0 0 12px;line-height:1.6;}
+  .settings-modal input[type=text]{
+    width:100%;font-family:inherit;border:1px solid var(--line);
+    border-radius:8px;padding:9px 10px;font-size:13.5px;margin-bottom:8px;
+    direction:ltr;text-align:left;
+  }
+  .settings-status{font-size:12.5px;color:var(--green-mid);font-weight:600;margin-bottom:12px;}
+  .settings-status.off{color:#8a7f4a;}
+  .settings-actions{display:flex;gap:8px;flex-wrap:wrap;}
+  .settings-actions .qa-btn{flex:1 1 auto;}
+
   /* ===== Tabs ===== */
   .tabs{
     margin-top:16px;
@@ -308,18 +344,48 @@
   footer.foot .director{color:var(--green-deep);font-weight:700;}
   footer.foot .designer{color:var(--ink);font-weight:700;}
 
-  @media (max-width:560px){
+  .overall-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+
+  @media (max-width:680px){
+    .wrap{padding:12px 8px 32px;}
+    header.head{padding:12px 14px;}
     .head-org{display:none;}
     .head-side img{height:46px;}
-    .head-center h1{font-size:18px;}
+    .head-center h1{font-size:17px;}
+    .head-center .sub{font-size:11.5px;}
+    .toolbar{padding:10px 12px;gap:10px;}
+    .toolbar .date-field{flex:1 1 130px;}
+    .toolbar input[type=date], .toolbar select{width:100%;font-size:13.5px;padding:8px;}
+    .tabs{gap:4px;}
+    .tab-btn{padding:8px 12px;font-size:13px;}
+    .panel{padding:14px 10px;}
+    .quick-actions{flex-direction:column;}
+    .quick-actions .qa-btn{width:100%;padding:10px 12px;font-size:13.5px;}
+    .stat-row{gap:6px;}
+    .chip{flex:1 1 28%;padding:8px 6px;}
+    .chip .n{font-size:17px;}
+    .chip .l{font-size:10px;}
     table.students{font-size:13px;}
-    .status-btn{min-width:44px;padding:6px 6px;font-size:11.5px;}
     .name-cell{font-size:13px;}
+  }
+
+  @media (max-width:480px){
+    table.students thead{display:none;}
+    table.students, table.students tbody, table.students tr, table.students td{display:block;width:100%;}
+    table.students tbody tr{
+      background:#fff;border:1px solid var(--line);border-radius:10px;
+      padding:10px 12px;margin-bottom:8px;
+    }
+    table.students td{padding:4px 0;border:none;}
+    table.students td.num-col{display:none;}
+    .name-cell{font-size:14.5px;margin-bottom:8px;}
+    .status-group{justify-content:flex-start;}
+    .status-btn{flex:1 1 30%;min-width:0;padding:10px 4px;font-size:12.5px;}
   }
 
   @media print{
     body{background:#fff;}
-    .toolbar .save-indicator, .quick-actions, .overall-btn{display:none;}
+    .toolbar .save-indicator, .toolbar .settings-btn, .quick-actions, .overall-btn{display:none;}
     .tabs{display:none;}
     .panel{border-radius:12px;}
   }
@@ -364,6 +430,9 @@
       </span>
       <span id="saveText" class="save-text"></span>
     </div>
+    <button class="settings-btn" id="btnSettings" title="إعدادات الحفظ السحابي">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+    </button>
   </div>
 
   <div class="tabs" id="tabsBar"></div>
@@ -400,6 +469,24 @@
     <button class="overall-btn" id="btnComputeOverall">تحديث إحصائية المدرسة</button>
     <button class="qa-btn export" id="btnExportOverall" disabled>تصدير التقرير الشامل (Excel)</button>
     <div id="overallResult"></div>
+  </div>
+
+  <div id="settingsOverlay" class="settings-overlay" style="display:none;">
+    <div class="settings-modal">
+      <h3>إعدادات الحفظ السحابي</h3>
+      <p class="settings-hint">
+        الصق هنا رابط "تطبيق الويب" (Web App URL) بعد إعداد سكربت جوجل شيت المرفق، ليتم حفظ بيانات الغياب في جدول بيانات مشترك يمكن الوصول إليه من أي جهاز أو متصفح بنفس الرابط.
+        اتركه فارغًا إن كنت تريد الحفظ على هذا الجهاز فقط.
+      </p>
+      <input type="text" id="cloudUrlInput" placeholder="https://script.google.com/macros/s/.../exec">
+      <div id="cloudStatus" class="settings-status"></div>
+      <div class="settings-actions">
+        <button id="btnTestCloud" class="qa-btn primary">اختبار الاتصال</button>
+        <button id="btnSaveCloud" class="qa-btn primary">حفظ</button>
+        <button id="btnClearCloud" class="qa-btn danger">إلغاء الربط</button>
+        <button id="btnCloseSettings" class="qa-btn">إغلاق</button>
+      </div>
+    </div>
   </div>
 
   <footer class="foot">
@@ -462,24 +549,98 @@ function setSaveIndicator(state){
   else { textEl.textContent = ''; }
 }
 
-async function loadGradeData(grade, date, period){
+const CLOUD_KEY = 'attendance_cloud_url';
+const DEFAULT_CLOUD_URL = 'https://script.google.com/macros/s/AKfycbyVMn-0stgrEaFG3dZdAgWQ8peVAowp1lw4ETPibtmmyyWz0GcCN_52qQN976qThJ96Ww/exec';
+const LOCAL_ONLY_FLAG = '__local_only__';
+
+function getCloudUrl(){
+  const stored = localStorage.getItem(CLOUD_KEY);
+  if(stored === null) return DEFAULT_CLOUD_URL; // لم يغيّر المستخدم الإعداد قط -> استخدم الرابط الافتراضي المدمج
+  if(stored === LOCAL_ONLY_FLAG) return ''; // المستخدم اختار الحفظ على هذا الجهاز فقط صراحةً
+  return stored.trim();
+}
+
+function setCloudUrl(url){
+  const trimmed = (url || '').trim();
+  localStorage.setItem(CLOUD_KEY, trimmed ? trimmed : LOCAL_ONLY_FLAG);
+}
+
+function isUsingDefaultCloudUrl(){
+  return localStorage.getItem(CLOUD_KEY) === null;
+}
+
+async function cloudRequest(payload, urlOverride){
+  const url = urlOverride || getCloudUrl();
+  if(!url) return null;
   try{
-    const res = await window.storage.get(storageKey(grade, date, period), true);
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {'Content-Type': 'text/plain;charset=utf-8'},
+      body: JSON.stringify(payload)
+    });
+    if(!res.ok) return null;
+    return await res.json();
+  }catch(e){
+    return null;
+  }
+}
+
+async function loadGradeData(grade, date, period){
+  const key = storageKey(grade, date, period);
+  if(getCloudUrl()){
+    const res = await cloudRequest({action:'get', key});
     if(res && res.value){
-      return JSON.parse(res.value);
+      try{ return JSON.parse(res.value); }catch(e){ return {}; }
     }
-    return {};
+    if(res){ return {}; } // cloud reachable, just no data yet
+    // cloud unreachable: fall back to local copy so the app still works
+  }
+  try{
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : {};
   }catch(e){
     return {};
   }
 }
 
+async function loadAllGradesData(date, period){
+  const keys = GRADES.map(g => storageKey(g, date, period));
+  if(getCloudUrl()){
+    const res = await cloudRequest({action:'getMany', keys});
+    if(res && res.values){
+      const out = {};
+      GRADES.forEach((g, idx)=>{
+        const raw = res.values[keys[idx]];
+        try{ out[g] = raw ? JSON.parse(raw) : {}; }catch(e){ out[g] = {}; }
+      });
+      return out;
+    }
+  }
+  const out = {};
+  for(const g of GRADES){
+    out[g] = await loadGradeData(g, date, period);
+  }
+  return out;
+}
+
 async function saveGradeData(grade, date, period, data){
   setSaveIndicator('saving');
+  const key = storageKey(grade, date, period);
+  const value = JSON.stringify(data);
+  if(getCloudUrl()){
+    const res = await cloudRequest({action:'set', key, value});
+    if(res && res.ok){
+      try{ localStorage.setItem(key, value); }catch(e){}
+      setSaveIndicator('saved');
+    }else{
+      setSaveIndicator('error');
+    }
+    return;
+  }
   try{
-    const res = await window.storage.set(storageKey(grade, date, period), JSON.stringify(data), true);
-    if(res){ setSaveIndicator('saved'); }
-    else { setSaveIndicator('error'); }
+    await new Promise(r=>setTimeout(r, 200));
+    localStorage.setItem(key, value);
+    setSaveIndicator('saved');
   }catch(e){
     setSaveIndicator('error');
   }
@@ -603,8 +764,9 @@ async function computeOverall(){
   document.getElementById('btnExportOverall').disabled = true;
   let totalStudents=0, totalPresent=0, totalAbsent=0, totalLate=0, totalPending=0;
   const rows = [];
+  const allData = await loadAllGradesData(currentDate, currentPeriod);
   for(const g of GRADES){
-    const data = await loadGradeData(g, currentDate, currentPeriod);
+    const data = allData[g] || {};
     const st = computeStats(data, STUDENTS[g].length);
     totalStudents += st.total;
     totalPresent += st.present;
@@ -613,7 +775,7 @@ async function computeOverall(){
     totalPending += st.pending;
     rows.push({grade:g, ...st});
   }
-  let html = '<table class="overall-table"><thead><tr>' +
+  let html = '<div class="overall-table-wrap"><table class="overall-table"><thead><tr>' +
     '<th>الصف</th><th>الإجمالي</th><th>حاضر</th><th>غائب</th><th>متأخر</th><th>لم يُسجَّل</th><th>نسبة الحضور</th>' +
     '</tr></thead><tbody>';
   rows.forEach(r=>{
@@ -622,7 +784,7 @@ async function computeOverall(){
   });
   const totalPct = totalStudents ? Math.round((totalPresent/totalStudents)*100) : 0;
   html += '<tr class="total-row"><td class="grade-name">إجمالي المدرسة</td><td>'+totalStudents+'</td><td>'+totalPresent+'</td><td>'+totalAbsent+'</td><td>'+totalLate+'</td><td>'+totalPending+'</td><td>'+totalPct+'%</td></tr>';
-  html += '</tbody></table>';
+  html += '</tbody></table></div>';
   resultEl.innerHTML = html;
 
   lastOverallRows = rows;
@@ -707,6 +869,64 @@ document.getElementById('btnClearGrade').addEventListener('click', ()=>{
 });
 
 document.getElementById('btnComputeOverall').addEventListener('click', computeOverall);
+
+function updateCloudStatusText(){
+  const el = document.getElementById('cloudStatus');
+  if(getCloudUrl()){
+    el.textContent = isUsingDefaultCloudUrl()
+      ? 'الحالة: متصل تلقائيًا بجدول بيانات سحابي مشترك (افتراضي) ✓'
+      : 'الحالة: متصل بجدول بيانات سحابي مشترك ✓';
+    el.classList.remove('off');
+  }else{
+    el.textContent = 'الحالة: الحفظ على هذا الجهاز فقط (بدون سحابة).';
+    el.classList.add('off');
+  }
+}
+
+function openSettings(){
+  document.getElementById('cloudUrlInput').value = getCloudUrl();
+  updateCloudStatusText();
+  document.getElementById('settingsOverlay').style.display = 'flex';
+}
+
+function closeSettings(){
+  document.getElementById('settingsOverlay').style.display = 'none';
+}
+
+document.getElementById('btnSettings').addEventListener('click', openSettings);
+document.getElementById('btnCloseSettings').addEventListener('click', closeSettings);
+document.getElementById('settingsOverlay').addEventListener('click', (e)=>{
+  if(e.target.id === 'settingsOverlay') closeSettings();
+});
+
+document.getElementById('btnSaveCloud').addEventListener('click', async ()=>{
+  const url = document.getElementById('cloudUrlInput').value.trim();
+  setCloudUrl(url);
+  updateCloudStatusText();
+  await refreshPanel();
+  document.getElementById('overallResult').innerHTML = '';
+  lastOverallRows = null;
+  document.getElementById('btnExportOverall').disabled = true;
+  alert(url ? 'تم حفظ رابط قاعدة البيانات السحابية.' : 'تم إلغاء الربط، سيتم الحفظ على هذا الجهاز فقط.');
+});
+
+document.getElementById('btnClearCloud').addEventListener('click', async ()=>{
+  document.getElementById('cloudUrlInput').value = '';
+  setCloudUrl('');
+  updateCloudStatusText();
+  await refreshPanel();
+});
+
+document.getElementById('btnTestCloud').addEventListener('click', async ()=>{
+  const url = document.getElementById('cloudUrlInput').value.trim();
+  if(!url){ alert('من فضلك أدخل الرابط أولاً.'); return; }
+  const res = await cloudRequest({action:'get', key:'__test__'}, url);
+  if(res){
+    alert('تم الاتصال بنجاح ✅');
+  }else{
+    alert('تعذر الاتصال. تأكد من صحة الرابط، وأن السكربت منشور بصلاحية "Anyone" (أي شخص).');
+  }
+});
 
 // init
 document.getElementById('dateInput').value = currentDate;
