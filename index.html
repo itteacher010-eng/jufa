@@ -103,9 +103,20 @@
     background:#fff;
     color:var(--ink);
   }
-  .save-indicator{font-size:12.5px;color:#7a7f6e;min-width:90px;text-align:center;}
+  .save-indicator{
+    font-size:12.5px;color:#7a7f6e;min-width:110px;
+    display:flex;align-items:center;justify-content:center;gap:6px;
+  }
+  .save-indicator .save-icon-wrap{position:relative;width:16px;height:16px;flex:0 0 auto;}
+  .save-indicator .save-icon{position:absolute;top:0;left:0;width:16px;height:16px;transition:opacity .15s ease;}
+  .save-indicator .icon-check{opacity:0;}
+  .save-indicator.saving .save-icon-wrap{animation:save-pulse .9s ease-in-out infinite;}
+  .save-indicator.saved .icon-save{opacity:0;}
+  .save-indicator.saved .icon-check{opacity:1;}
   .save-indicator.saved{color:var(--green-mid);}
   .save-indicator.saving{color:var(--gold);}
+  .save-indicator.error{color:var(--maroon);}
+  @keyframes save-pulse{0%,100%{opacity:1;} 50%{opacity:.4;}}
 
   /* ===== Tabs ===== */
   .tabs{
@@ -295,7 +306,7 @@
     gap:8px;
   }
   footer.foot .director{color:var(--green-deep);font-weight:700;}
-  footer.foot .designer{color:#8a8d7c;}
+  footer.foot .designer{color:var(--ink);font-weight:700;}
 
   @media (max-width:560px){
     .head-org{display:none;}
@@ -346,7 +357,13 @@
       <label for="periodInput">الحصة:</label>
       <select id="periodInput"></select>
     </div>
-    <div id="saveIndicator" class="save-indicator"></div>
+    <div id="saveIndicator" class="save-indicator">
+      <span class="save-icon-wrap">
+        <svg class="save-icon icon-save" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+        <svg class="save-icon icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </span>
+      <span id="saveText" class="save-text"></span>
+    </div>
   </div>
 
   <div class="tabs" id="tabsBar"></div>
@@ -437,11 +454,12 @@ function buildPeriods(){
 
 function setSaveIndicator(state){
   const el = document.getElementById('saveIndicator');
-  el.classList.remove('saved','saving');
-  if(state === 'saving'){ el.textContent = 'جارٍ الحفظ...'; el.classList.add('saving'); }
-  else if(state === 'saved'){ el.textContent = 'تم الحفظ ✓'; el.classList.add('saved'); }
-  else if(state === 'error'){ el.textContent = 'تعذر الحفظ'; }
-  else { el.textContent = ''; }
+  const textEl = document.getElementById('saveText');
+  el.classList.remove('saved','saving','error');
+  if(state === 'saving'){ textEl.textContent = 'جارٍ الحفظ...'; el.classList.add('saving'); }
+  else if(state === 'saved'){ textEl.textContent = 'تم الحفظ ✓'; el.classList.add('saved'); }
+  else if(state === 'error'){ textEl.textContent = 'تعذر الحفظ'; el.classList.add('error'); }
+  else { textEl.textContent = ''; }
 }
 
 async function loadGradeData(grade, date, period){
