@@ -1,0 +1,33 @@
+{
+  "name": "الغياب الإلكتروني - مدرسة جوفاء",
+  "short_name": "غياب جوفاء",
+  "description": "تطبيق تسجيل الغياب الإلكتروني لمدرسة جوفاء للتعليم الأساسي بنين",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#faf8f2",
+  "theme_color": "#0b5c3c",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

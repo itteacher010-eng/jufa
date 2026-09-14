@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>الغياب الإلكتروني - مدرسة جوفاء للتعليم الأساسي بنين</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0b5c3c">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Amiri:wght@700&display=swap');
 
@@ -933,6 +937,12 @@ document.getElementById('dateInput').value = currentDate;
 buildPeriods();
 buildTabs();
 refreshPanel();
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  });
+}
 </script>
 </body>
 </html>
